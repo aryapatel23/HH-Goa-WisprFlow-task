@@ -2,233 +2,173 @@
 
 > **"Speak up about your food. Cook what students eat. Waste less."**
 
-An AI-powered hostel mess feedback, demand forecasting, and food-waste reduction platform built with **Wispr Flow** (voice-driven development) for the **Rai University Hostel Mess Pilot**.
+An AI-driven hostel mess intelligence, demand forecasting, and food-waste reduction platform built for the **Rai University Hostel Mess Pilot**.
 
 ---
 
-## 📌 Problem Statement
+## 1. The Methods
 
-Hostel and college messes cater to hundreds of students three times a day, yet operations run almost entirely on guesswork:
-- **Blind Cooking & Enormous Food Waste**: Cooking quantities are based on fixed estimates rather than real-time demand. Tons of edible food are thrown away daily, while popular meals occasionally run short.
-- **Unheard Feedback**: Paper registers, chaotic WhatsApp groups, and dusty suggestion boxes fail to provide structured data. Complaints regarding taste, hygiene, or undercooked dishes rarely reach mess managers in time to make adjustments.
-- **No Early Skip Signals**: Students have no frictionless mechanism to notify the kitchen that they are eating out or skipping dinner before cooking begins.
-- **Lack of Actionable Insights**: Managers cannot easily pinpoint which specific dishes suffer high rejection rates or how weekday patterns affect dining attendance.
+MassMatter transforms subjective, noisy mess complaints and blind cooking into a structured, predictive operating system using five core methods:
 
----
-
-## 💡 The Solution
-
-MassMatter converts hostel mess operations from guess-based cooking to **data-driven precision**:
-
-1. **Voice-First, Multilingual Feedback**: Students tap the microphone and speak in **Hindi, English, Gujarati, or Hinglish** (e.g., *"aaj ka paneer bahut oily tha, aur roti kacchi thi"*). The browser captures speech (Web Speech API), and xAI Grok translates, categorizes (Hygiene, Taste, Quantity, Service), scores sentiment, and links feedback to the exact dish.
-2. **Anonymous Complaint Box**: Student identity is strictly isolated from complaints, fostering honest and fearless feedback.
-3. **Headcount Demand Forecasting**: Calculates target preparation headcount in real-time:
-   $$\text{Target Headcount} = \text{Enrolled Students} - \text{Logged Meal Skips} \pm \text{AI Weekday Adjustment}$$
-4. **The Waste-Free Streak & Gamification**: Students earn streak counters and hostel block leaderboard points for marking meal skips before the cutoff time and finishing their meals with clean plates.
-5. **AI Weekly Executive Briefing**: Generative AI synthesizes thousands of ratings, skips, and complaints into **3 Key Insights** and **3 Actionable Kitchen Directives** every week.
-6. **Role-Based Access**: Role protection separating **Student** view (`/student`) from **Manager & Admin** dashboard (`/dashboard`).
-7. **Real Hostel Pilot**: Pre-seeded with actual timings and menu items from Rai University Hostel Mess (Paneer Butter Masala, Dal Tadka, Jeera Rice, Phulka Roti, Gulab Jamun).
+1. **Multilingual Speech Ingestion**: Captures natural voice feedback across **Hindi, Gujarati, English, and Hinglish** directly in the browser via the Web Speech API with zero client-side latency.
+2. **Strictly Typed LLM Triage (Groq / xAI via OpenAI SDK)**: Processes unstructured conversational speech through `llama-3.3-70b-versatile` / `grok-2-latest` using `response_format: { type: "json_object" }` to extract normalized categories (`HYGIENE`, `TASTE`, `QUANTITY`, `SERVICE`, `OTHER`), urgency levels, sentiment, and linked menu dishes.
+3. **Double-Layer Zod Validation & Keyword Fallback**: Validates all inputs and LLM outputs using Zod schemas (`FeedbackOutputSchema`, `DashboardStatsSchema`, `AIWeeklyReportSchema`). If API keys are missing or provider outages occur, an automated rule-based keyword fallback classifier guarantees uninterrupted system operation.
+4. **Predictive Cook Headcount Regression**: Forecasts daily and slot-by-slot kitchen preparation volumes by subtracting verified advance meal skips from student enrollment, adjusted by day-of-week moving averages and dish-specific appeal modifiers with calibrated confidence notes.
+5. **Gamified Closed-Loop Accountability**: Drives student engagement with a Waste-Free Streak counter shifting dynamic color tiers at **3, 7, and 14 days**, paired with a privacy-preserving campus leaderboard and anti-cheat attendance verification.
 
 ---
 
-## 🔑 Quick Demo Accounts
+## 2. The Deadline
 
-For rapid evaluation and testing, MassMatter includes 1-click demo login buttons directly on the [/login](http://localhost:3000/login) page:
-
-| Role | Demo Email | Access Permission | Destination Page |
-|---|---|---|---|
-| **Student** | `student@massmatter.com` | Student Portal (Menu, ratings, skips, voice feedback) | `/student` |
-| **Mess Manager** | `manage@massmatter.com` | Manager Analytics Dashboard & Demand Forecast | `/dashboard` |
-| **Chief Admin** | `admin@massmatter.com` | Full Administrative & Manager Analytics Dashboard | `/dashboard` |
-
-> **Role Guarding**: If a student attempts to open `/dashboard`, they are automatically intercepted and redirected to `/student` with an access alert.
+- **Hackathon Track**: Hackathon Goa (HH-Goa) — Wispr Flow Voice-Driven Development Challenge
+- **Submission Date**: **September 30, 2026**
 
 ---
 
-## 🚀 Planned Features & Roadmap
+## 3. The Live Demo Link
 
-### Core MVP Features
-- [x] **Next.js 16 App Router & TypeScript Architecture**: Scalable, type-safe full-stack setup.
-- [x] **Tailwind CSS & shadcn/ui Component System**: Responsive, accessible, mobile-first design.
-- [x] **Auth.js (NextAuth v5) Authentication**: Google Sign-In and email login with role-based session support (`student`, `manager`, `admin`).
-- [x] **Prisma ORM & PostgreSQL Schema**: Relational models for `User`, `Meal`, `Dish`, `Rating`, `Skip`, `Complaint` (anonymous), `Streak`, and `WeeklyReport`.
-- [x] **Mobile-First Login Page**: Clean sign-in page with 1-click demo accounts for Student, Manager, and Admin.
-- [x] **Role-Based Routing & Middleware**: Strict protection ensuring students can only open `/student` and only managers/admins can open `/dashboard`.
-- [x] **xAI Grok Integration (via OpenAI SDK)**: Structured prompt schemas for complaint classification and reporting with automated keyword fallbacks.
-- [x] **Zod Validation**: Strict runtime schema validation for feedback submissions and AI structured outputs.
-- [x] **Daily Menu & 1-Tap Star Ratings**: Rapid 1-to-5 star rating per dish with emoji reactions.
-- [x] **Skip-Meal Toggle**: Instant dinner/lunch skip notification before kitchen preparation cut-off.
-- [x] **Voice Feedback Widget**: Multilingual speech capture with instant AI tag generation.
-- [x] **Waste-Free Streak Counter & Hostel Leaderboard**: Gamified plate-clearing incentives.
-- [x] **Manager Dashboard**: Expected headcount metrics, dish-wise performance tables, and waste trends.
+- **Live Production URL**: [https://massmatter.vercel.app](https://massmatter.vercel.app)
+- **Interactive Health Check**: [https://massmatter.vercel.app/api/health](https://massmatter.vercel.app/api/health)
+- **1-Click Pre-Configured Demo Credentials** (available directly on [/login](https://massmatter.vercel.app/login)):
+  - **Student**: `student@massmatter.com` (Access to Student Portal, Voice Feedback, Skip Toggle, Personal Streak Hub)
+  - **Mess Manager**: `manage@massmatter.com` (Access to Demand Analytics Dashboard, AI Weekly Briefing, Headcount Forecast)
+  - **Chief Admin**: `admin@massmatter.com` (Full Administrative & Executive Dashboard Authority)
 
-### Planned Stretch Features
-- [ ] **Thali Scan (Vision AI)**: Plate photo upload analyzed by Claude Vision to calculate leftover percentage per dish.
-- [ ] **Ask MassMatter (Natural Language Analytics)**: Conversational chat interface for managers to ask natural-language questions over mess data.
-- [ ] **AI Menu Optimizer**: Automatic menu recommendations for upcoming weeks based on historical satisfaction and waste data.
-- [ ] **PWA & Mobile Push Notifications**: Push alerts sent 30 minutes before meal skip cutoff times.
+---
+
+## 👥 The Team
+
+- **Solo Developer**: **Arya Patel**
+- **Development Modality**: **Built 100% entirely with voice using Wispr Flow**.
+  Every line of application logic, Next.js 16 App Router code, Prisma schema migrations, Zod validations, Groq LLM pipelines, and Tailwind CSS components was authored and iterated hands-free using continuous Wispr Flow voice dictation.
+
+---
+
+## 🛑 The Problem in the Hostel Mess
+
+In university and collegiate hostels catering to 450+ students three times a day, dining operations suffer from systemic operational failure:
+
+1. **Blind Cooking & Staggering Food Spoilage**: Kitchens prepare fixed portions based on outdated static enrollment lists. When 50–100 students eat out, attend late labs, or skip dinner on Friday nights, **over 80 kg of edible food is thrown into dumpsters daily**.
+2. **The "Silent Dinner" Friction**: Feedback collection relies on paper registers, angry WhatsApp chats, or unread suggestion boxes. Students rarely speak up about undercooked rotis or sour dal due to social friction and fear of confrontation.
+3. **No Early Warning for Surges & Deficits**: Managers discover shortages only when food runs out mid-service, leading to emergency batch cooking, compromised nutrition, and student dissatisfaction.
+4. **Zero Actionable Root-Cause Analysis**: Mess committees cannot differentiate between random taste preferences and systemic operational defects (e.g., understaffed tandoors during Wednesday dinner peak).
+
+---
+
+## 🔄 Why MassMatter was Built as a Multi-Stage System
+
+Hostel mess management cannot be solved with a simple static feedback form. It demands an interconnected, multi-stage operational loop:
+
+```mermaid
+flowchart LR
+    A[Stage 1: Student Signal & Multilingual Capture] --> B[Stage 2: Operational Demand Intelligence & Waste Elimination]
+    B --> C[Stage 3: Institutional Accountability & Continuous Kitchen Improvement]
+    C --> A
+```
+
+### 3 Core Feature Modules & AI Architectural Overview
+
+#### Feature 1: Multilingual Anonymous Voice Feedback & AI Triage
+- **Description**: Students tap a floating microphone and voice their experience in conversational Hindi (*"aaj ka paneer bahut oily tha, aur roti kacchi thi"*), Gujarati, or English. The student's identity is strictly separated from the complaint to guarantee 100% candid, fearless reporting.
+- **AI Architectural Overview**:
+  ```text
+  [Microphone / Web Speech API] 
+        ↓ (Live Transcript)
+  [Next.js API: /api/feedback] 
+        ↓ (Zod Input Validation)
+  [Groq LLaMA-3.3-70B / xAI Grok (OpenAI SDK)]
+        ↓ (System Prompt with JSON Schema Enforcement)
+  [Zod Output Validation: FeedbackOutputSchema]
+        ↓ (Success: Category + Urgency + Dish Link | Failure: Rule-based Keyword Fallback)
+  [PostgreSQL: Complaint Record (Strictly NO userId)]
+  ```
+
+#### Feature 2: Predictive Headcount & Slot-by-Slot Demand Forecasting
+- **Description**: Replaces blind cooking with dynamic, slot-by-slot kitchen targets (Breakfast, Lunch, Snacks, Dinner). Predicts meal turnout based on verified advance skips, day-of-week trends, and historical dish appeal.
+- **AI Architectural Overview**:
+  $$\text{Target Headcount} = \text{Enrolled Students} - \max(\text{Logged Skips}, \text{Historical Baseline}) \pm \text{Dish Factor}$$
+  - Enrolled hostel base (450+ students).
+  - Advance skips logged before meal cutoff times.
+  - Weekend vs. weekday regression (e.g., Friday dinner skip rate = 26%).
+  - Dish popularity modifiers (+6% turnout for Paneer Butter Masala; -4% for light Khichdi).
+  - Output displays calibrated confidence notes (e.g., *"High (92%): 11 advance skips logged + Friday dinner trend"*).
+
+#### Feature 3: AI Executive Weekly Briefing & Waste-Free Streaks
+- **Description**: Generative AI synthesizes thousands of weekly ratings, skip logs, and multilingual complaints into **3 Key Insights** and **3 Recommended Kitchen Directives**. Students earn gamified clean-plate streaks that shift colors at **3, 7, and 14 days**, backed by a top 10 campus leaderboard.
+- **AI Architectural Overview**:
+  ```text
+  [Scheduled DB Aggregator (Zero Student Names)]
+  - Ratings Average & Dish Breakdown
+  - Total Skips & Prevented Food Waste (kg)
+  - Active Waste-Free Streaks Count
+  - Unresolved Critical Complaints
+        ↓
+  [Groq LLaMA-3.3-70B (OpenAI SDK)]
+        ↓
+  [AIWeeklyReportSchema Zod Validation]
+        ↓ (Persisted in WeeklyReport Table)
+  [Executive Briefing Dashboard Card + Fallback Template]
+  ```
 
 ---
 
 ## 🛠️ Technology Stack
 
-| Layer | Technology | Purpose |
+| Layer | Technology | Function |
 |---|---|---|
-| **Framework** | Next.js 16 (App Router) | Full-stack React framework with Server & Client components |
+| **Framework** | Next.js 16 (App Router + Turbopack) | Server and Client React components |
 | **Language** | TypeScript | End-to-end type safety |
-| **Auth** | Auth.js (NextAuth v5) | Google OAuth, Email/Credentials, role-based session claims |
-| **Styling** | Tailwind CSS v4 | Modern, utility-first responsive styling |
-| **UI Components** | shadcn/ui style components & Lucide React | Clean, accessible design system |
-| **Charts** | Recharts | Visualizing waste reduction, headcount, and dish ratings |
-| **Database & ORM**| PostgreSQL (Neon / Supabase / Local) + Prisma ORM | Relational data persistence |
-| **Validation** | Zod | Schema validation for user input and AI responses |
-| **AI / LLM** | xAI Grok API (via OpenAI SDK) | Multilingual classification and executive reports |
-| **Speech** | Web Speech API | Zero-cost browser speech-to-text in EN, HI, GU |
+| **Styling** | Tailwind CSS v4 | Responsive utility design system |
+| **UI Components** | shadcn/ui + Lucide React | Accessible accessible interface tokens |
+| **Charts** | Recharts | Bar charts, 7-day line trends, category donut charts |
+| **Database & ORM** | PostgreSQL + Prisma ORM | Relational models with pooled & direct URLs |
+| **Auth** | Auth.js (NextAuth v5) | Google OAuth + Credentials demo logins |
+| **AI / LLM** | Groq API (`llama-3.3-70b-versatile`) / xAI | Sub-second structured complaint triage & weekly synthesis |
+| **Speech** | Web Speech API | Zero-cost browser speech recognition in EN, HI, GU |
+| **Validation** | Zod | Runtime validation for user inputs & AI outputs |
 
 ---
 
-## 📂 Project Structure
+## ⚡ API Functions & Endpoints
 
-```text
-├── app/
-│   ├── api/
-│   │   ├── auth/
-│   │   │   └── [...nextauth]/route.ts  # Auth.js route handler
-│   │   ├── dashboard/
-│   │   │   └── route.ts               # Manager analytics & headcount forecast API
-│   │   ├── feedback/
-│   │   │   └── route.ts               # AI-powered anonymous feedback endpoint
-│   │   ├── health/
-│   │   │   └── route.ts               # Production health check & zero-hardcoding environment diagnostics
-│   │   ├── leaderboard/
-│   │   │   └── route.ts               # Top 10 students privacy-preserving leaderboard API
-│   │   ├── menu/today/route.ts        # Today's menu and meal slot query
-│   │   ├── ratings/route.ts           # 1-to-5 star ratings endpoint with skip-violation penalty
-│   │   ├── reports/weekly/route.ts    # AI Weekly Executive Briefing endpoint with Zod validation
-│   │   ├── skips/route.ts             # Meal skip endpoint with once-per-day streak enforcement
-│   │   └── streak/
-│   │       └── route.ts               # Student streak endpoint with 3, 7, 14-day tier calculation
-│   ├── dashboard/
-│   │   └── page.tsx                   # Protected Manager/Admin Operations Dashboard
-│   ├── leaderboard/
-│   │   └── page.tsx                   # Top 10 Student Waste-Free Leaderboard (first name & block)
-│   ├── login/
-│   │   └── page.tsx                   # Mobile-first Login page with 1-click Demo Accounts
-│   ├── streak/
-│   │   └── page.tsx                   # Interactive Streak page with 3, 7, 14-day colors & celebration
-│   ├── student/
-│   │   └── page.tsx                   # Protected Student Portal (Menu, ratings, skips, voice)
-│   ├── globals.css                    # Tailwind CSS v4 styling rules
-│   ├── layout.tsx                     # App root layout with SessionProvider and Navbar
-│   └── page.tsx                       # Interactive home landing page
-├── auth.ts                            # Auth.js configuration with Google & Credentials
-├── components/
-│   ├── dashboard/
-│   │   ├── ComplaintDonutChart.tsx    # Recharts Donut chart of complaint categories
-│   │   ├── ComplaintFeed.tsx          # Filterable anonymous complaint feed with urgency badges
-│   │   ├── DishRatingBarChart.tsx     # Recharts Bar chart of average dish ratings
-│   │   ├── HeadcountCards.tsx         # Expected headcount forecast and KPI metric cards
-│   │   ├── MealForecastCards.tsx      # Slot-by-slot meal prediction cards with confidence notes
-│   │   ├── RatingTrendLineChart.tsx   # Recharts Line chart of 7-day rating trend
-│   │   ├── TopRejectedDishes.tsx      # Ranked list of lowest rated dishes (>= 3 ratings)
-│   │   └── WeeklyReportCard.tsx       # AI Executive Report Card with generate button & fallback
-│   ├── ui/
-│   │   ├── badge.tsx                  # Badge component with status variants
-│   │   ├── button.tsx                 # Button component with CVA variants
-│   │   ├── card.tsx                   # Card, CardHeader, CardContent
-│   │   └── input.tsx                  # Accessible input field
-│   ├── Navbar.tsx                     # Navigation header with session & role badges
-│   └── SessionProvider.tsx            # NextAuth SessionProvider wrapper
-├── docs/
-│   └── PRD.md                         # Complete original Product Requirements Document
-├── lib/
-│   ├── forecast.ts                    # Headcount forecast modeled on slot, day-type & skips
-│   ├── grok.ts                        # Groq / xAI client instance (OpenAI SDK)
-│   ├── groq.ts                        # Client alias
-│   ├── prisma.ts                      # Prisma Client singleton
-│   ├── utils.ts                       # Tailwind clsx + twMerge utility
-│   └── validations/
-│       ├── dashboard.ts               # Zod validation schema for dashboard stats
-│       ├── feedback.ts                # Zod validation schemas for feedback
-│       └── weeklyReport.ts            # Zod validation schema for AI weekly report
-├── middleware.ts                      # Role-based route guard for /student & /dashboard
-├── prisma/
-│   ├── schema.prisma                  # PostgreSQL database models (with directUrl support)
-│   └── seed.ts                        # Full week Indian hostel data seeder
-├── public/                            # Static media and icons
-├── scripts/
-│   └── build.js                       # Production build script (migrate deploy + client generate)
-├── types/
-│   └── next-auth.d.ts                 # NextAuth role session type definitions
-├── .env.example                       # Environment variables template
-├── package.json                       # Dependencies and scripts (with postinstall)
-└── tsconfig.json                      # TypeScript compiler configuration
-```
+- `POST /api/feedback`: Anonymous voice and text feedback parsing with Groq AI and Zod validation.
+- `GET /api/dashboard`: Aggregated manager analytics, demand stats, charts, and forecasts.
+- `GET | POST /api/reports/weekly`: Generates and retrieves the AI weekly executive operations briefing.
+- `GET /api/leaderboard`: Top 10 student zero-waste leaderboard (privacy-preserved: first name & block only).
+- `GET | POST /api/streak`: Personal student streak tracker with once-per-day enforcement and skip-violation reset.
+- `GET | POST /api/skips`: Student meal skip toggle with cutoff-time enforcement.
+- `GET | POST /api/ratings`: 1-to-5 star ratings with anti-cheat streak reset if dining after a marked skip.
+- `GET /api/menu/today`: Current meal schedule, dish listings, and cutoff countdowns.
+- `GET /api/health`: Production diagnostic route verifying database ping, pooled connections, and environment keys.
 
 ---
 
-## ☁️ Vercel & Production Deployment
+## 💻 Local Setup Instructions
 
-MassMatter is configured for zero-friction deployment on **Vercel** with hosted PostgreSQL (Neon, Supabase, or AWS RDS):
-
-### 1. Hosted PostgreSQL Connection Strings
-- **`DATABASE_URL`**: Pooled connection string (PgBouncer / port 6543) used by the application during runtime.
-- **`DIRECT_URL`**: Direct unpooled connection string (port 5432) used by Prisma CLI for schema migrations.
-
-### 2. Automated Build Pipeline
-- **`postinstall: "prisma generate"`**: Automatically generates the Prisma Client on Vercel after `npm install`.
-- **`build: "node scripts/build.js"`**: Pre-build pipeline that:
-  1. Checks `MIGRATE_DEPLOY_BEFORE_NEXT_JS_BUILD`: if set to `"true"`, runs `npx prisma migrate deploy` before the Next.js compilation.
-  2. Ensures Prisma Client is generated.
-  3. Executes `next build`.
-
-### 3. Vercel Environment Variables
-Set the following variables in your Vercel Project Settings:
-```env
-DATABASE_URL="postgresql://user:password@pooler.neon.tech/messmeter?sslmode=require&pgbouncer=true"
-DIRECT_URL="postgresql://user:password@ep-direct.neon.tech/messmeter?sslmode=require"
-MIGRATE_DEPLOY_BEFORE_NEXT_JS_BUILD="true"
-AUTH_SECRET="your-32-char-random-auth-secret"
-NEXTAUTH_URL="https://your-domain.vercel.app"
-GROQ_API_KEY="gsk_..."
-GROQ_MODEL="llama-3.3-70b-versatile"
-# Optional:
-AUTH_GOOGLE_ID="your-google-oauth-client-id"
-AUTH_GOOGLE_SECRET="your-google-oauth-client-secret"
-```
-
-### 4. Health Check Endpoint
-Ping `/api/health` to verify dynamic runtime health, database ping latency, and services without logging or exposing sensitive tokens.
-
----
-
-## ⚡ Getting Started
-
-### 1. Clone & Install Dependencies
+### 1. Clone the Repository
 ```bash
 git clone https://github.com/aryapatel23/HH-Goa-WisprFlow-task.git
 cd HH-Goa-WisprFlow-task
 npm install
 ```
 
-### 2. Environment Setup
+### 2. Configure Environment Variables
 Copy `.env.example` to `.env`:
 ```bash
 cp .env.example .env
 ```
-Fill in the credentials:
+Ensure the following keys are provided:
 ```env
 DATABASE_URL="postgresql://postgres:password@localhost:5432/messmeter?schema=public"
-AUTH_SECRET="your-32-char-auth-secret"
-XAI_BASE_URL="https://api.x.ai/v1"
-XAI_API_KEY="your-xai-api-key"
-GROK_MODEL="grok-2-latest"
-# Optional for Google sign-in:
-AUTH_GOOGLE_ID="your-google-client-id"
-AUTH_GOOGLE_SECRET="your-google-client-secret"
+DIRECT_URL="postgresql://postgres:password@localhost:5432/messmeter?schema=public"
+MIGRATE_DEPLOY_BEFORE_NEXT_JS_BUILD="false"
+AUTH_SECRET="dev-secret-key-at-least-32-characters-long"
+GROQ_API_KEY="gsk_..."
+GROQ_MODEL="llama-3.3-70b-versatile"
+XAI_BASE_URL="https://api.groq.com/openai/v1"
 ```
 
-### 3. Migrate & Seed Database
+### 3. Initialize & Seed Database
 ```bash
 npx prisma db push
 npx prisma db seed
@@ -238,8 +178,18 @@ npx prisma db seed
 ```bash
 npm run dev
 ```
-Open [http://localhost:3000](http://localhost:3000) in your browser. Visit [http://localhost:3000/login](http://localhost:3000/login) to log in using the demo accounts.
+Open [http://localhost:3000](http://localhost:3000) in your browser. Visit [http://localhost:3000/login](http://localhost:3000/login) to log in with 1-click demo accounts.
 
 ---
 
-*Owner: Arya Patel | Built for Hackathon Goa with Wispr Flow*
+## ☁️ Vercel Production Deployment
+
+MassMatter is configured for automatic deployment on Vercel with hosted PostgreSQL (Neon, Supabase, or AWS RDS):
+
+1. **Dual Database Connections**: Set `DATABASE_URL` (pooled / PgBouncer) and `DIRECT_URL` (unpooled direct connection for migrations).
+2. **Build Pipeline**: `scripts/build.js` conditionally deploys Prisma migrations when `MIGRATE_DEPLOY_BEFORE_NEXT_JS_BUILD="true"`, executes `prisma generate`, and completes `next build`.
+3. **Graceful Auth**: Google OAuth fails gracefully if credentials are not configured, allowing production demo logins to work seamlessly.
+
+---
+
+*Solo Project by Arya Patel | Built 100% with Voice via Wispr Flow for Hackathon Goa 2026*
