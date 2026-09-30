@@ -235,7 +235,16 @@ export default function LoginPage() {
             <Button
               type="button"
               variant="outline"
-              onClick={() => signIn("google", { callbackUrl: "/student" })}
+              onClick={async () => {
+                try {
+                  const res = await signIn("google", { callbackUrl: "/student", redirect: false });
+                  if ((res as any)?.error) {
+                    setError("Google Client ID is not configured in .env. Please use the 1-Click Demo Accounts (Student, Manager, Admin) or enter your email above!");
+                  }
+                } catch {
+                  setError("Google Client ID is not configured in .env. Please use the 1-Click Demo Accounts (Student, Manager, Admin) or enter your email above!");
+                }
+              }}
               className="w-full text-xs font-medium h-10 gap-2 border-zinc-200 hover:bg-zinc-50 dark:border-zinc-800"
             >
               <svg className="h-4 w-4" viewBox="0 0 24 24">
