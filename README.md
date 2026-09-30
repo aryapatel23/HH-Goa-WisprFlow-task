@@ -94,10 +94,15 @@ For rapid evaluation and testing, MassMatter includes 1-click demo login buttons
 │   ├── api/
 │   │   ├── auth/
 │   │   │   └── [...nextauth]/route.ts  # Auth.js route handler
-│   │   └── feedback/
-│   │       └── route.ts               # AI-powered anonymous feedback endpoint
+│   │   ├── dashboard/
+│   │   │   └── route.ts               # Manager analytics & headcount forecast API
+│   │   ├── feedback/
+│   │   │   └── route.ts               # AI-powered anonymous feedback endpoint
+│   │   ├── menu/today/route.ts        # Today's menu and meal slot query
+│   │   ├── ratings/route.ts           # 1-to-5 star ratings endpoint with 1-rating-per-day guard
+│   │   └── skips/route.ts             # Meal skip endpoint with cutoff time validation
 │   ├── dashboard/
-│   │   └── page.tsx                   # Protected Manager/Admin Demand & AI Dashboard
+│   │   └── page.tsx                   # Protected Manager/Admin Operations Dashboard
 │   ├── login/
 │   │   └── page.tsx                   # Mobile-first Login page with 1-click Demo Accounts
 │   ├── student/
@@ -107,6 +112,13 @@ For rapid evaluation and testing, MassMatter includes 1-click demo login buttons
 │   └── page.tsx                       # Interactive home landing page
 ├── auth.ts                            # Auth.js configuration with Google & Credentials
 ├── components/
+│   ├── dashboard/
+│   │   ├── ComplaintDonutChart.tsx    # Recharts Donut chart of complaint categories
+│   │   ├── ComplaintFeed.tsx          # Filterable anonymous complaint feed with urgency badges
+│   │   ├── DishRatingBarChart.tsx     # Recharts Bar chart of average dish ratings
+│   │   ├── HeadcountCards.tsx         # Expected headcount forecast and KPI metric cards
+│   │   ├── RatingTrendLineChart.tsx   # Recharts Line chart of 7-day rating trend
+│   │   └── TopRejectedDishes.tsx      # Ranked list of lowest rated dishes (>= 3 ratings)
 │   ├── ui/
 │   │   ├── badge.tsx                  # Badge component with status variants
 │   │   ├── button.tsx                 # Button component with CVA variants
@@ -117,10 +129,13 @@ For rapid evaluation and testing, MassMatter includes 1-click demo login buttons
 ├── docs/
 │   └── PRD.md                         # Complete original Product Requirements Document
 ├── lib/
-│   ├── grok.ts                        # xAI Grok client instance (OpenAI SDK)
+│   ├── grok.ts                        # Groq / xAI client instance (OpenAI SDK)
+│   ├── groq.ts                        # Client alias
 │   ├── prisma.ts                      # Prisma Client singleton
 │   ├── utils.ts                       # Tailwind clsx + twMerge utility
-│   └── validations.ts                # Zod data validation schemas
+│   └── validations/
+│       ├── dashboard.ts               # Zod validation schema for dashboard stats
+│       └── feedback.ts                # Zod validation schemas for feedback
 ├── middleware.ts                      # Role-based route guard for /student & /dashboard
 ├── prisma/
 │   ├── schema.prisma                  # PostgreSQL database models

@@ -1,22 +1,26 @@
 import OpenAI from "openai";
 
-// Base URL for xAI Grok API (OpenAI-compatible)
-const baseURL = process.env.XAI_BASE_URL || "https://api.x.ai/v1";
-
-// API Key from environment variable (XAI_API_KEY / XAI_APA_KEY)
+// API Key from environment variable (GROQ_API_KEY / XAI_API_KEY / XAI_APA_KEY)
 const apiKey =
+  process.env.GROQ_API_KEY ||
   process.env.XAI_API_KEY ||
   process.env.XAI_APA_KEY ||
   process.env.GROK_API_KEY ||
-  process.env.GROQ_API_KEY ||
-  "dummy-xai-key";
+  "dummy-key";
 
-// Model from environment variable (GROK_MODEL / GROQ_MODEL)
+const isGroq = apiKey.startsWith("gsk_");
+
+// Base URL: defaults to GroqCloud if gsk key, or xAI otherwise
+const baseURL =
+  process.env.GROQ_BASE_URL ||
+  process.env.XAI_BASE_URL ||
+  (isGroq ? "https://api.groq.com/openai/v1" : "https://api.x.ai/v1");
+
+// Model from environment variable
 export const GROK_MODEL =
-  process.env.GROK_MODEL ||
   process.env.GROQ_MODEL ||
-  process.env.XAI_MODEL ||
-  "grok-2-latest";
+  process.env.GROK_MODEL ||
+  (isGroq ? "llama-3.3-70b-versatile" : "grok-2-latest");
 
 export const grok = new OpenAI({
   apiKey,
