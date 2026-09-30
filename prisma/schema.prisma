@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,16 +8,16 @@ datasource db {
 }
 
 enum Role {
-  STUDENT
-  MANAGER
-  ADMIN
+  student
+  manager
+  admin
 }
 
 enum MealSlot {
-  BREAKFAST
-  LUNCH
-  SNACKS
-  DINNER
+  breakfast
+  lunch
+  snacks
+  dinner
 }
 
 enum ComplaintCategory {
@@ -31,6 +28,12 @@ enum ComplaintCategory {
   OTHER
 }
 
+enum Sentiment {
+  POSITIVE
+  NEUTRAL
+  NEGATIVE
+}
+
 enum UrgencyLevel {
   LOW
   MEDIUM
@@ -38,58 +41,57 @@ enum UrgencyLevel {
   CRITICAL
 }
 
-enum Sentiment {
-  POSITIVE
-  NEUTRAL
-  NEGATIVE
-}
-
 model User {
-  id          String     @id @default(cuid())
-  email       String     @unique
-  name        String?
-  role        Role       @default(STUDENT)
+  id          String    @id @default(cuid())
+  email       String    @unique
+  name        String
+  role        Role      @default(student)
   hostelBlock String?
   roomNumber  String?
-  streakCount Int        @default(0)
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
   ratings     Rating[]
-  mealSkips   MealSkip[]
+  skips       Skip[]
+  streak      Streak?
 }
 
 model Meal {
-  id          String     @id @default(cuid())
-  date        DateTime
-  slot        MealSlot
-  startTime   String
-  endTime     String
-  cutoffTime  DateTime
-  dishes      Dish[]
-  ratings     Rating[]
-  mealSkips   MealSkip[]
-  complaints  Complaint[]
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
+  id         String     @id @default(cuid())
+  date       DateTime
+  slot       MealSlot
+  startTime  String
+  endTime    String
+  cutoffTime DateTime
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+
+  dishes     Dish[]
+  ratings    Rating[]
+  skips      Skip[]
+  complaints Complaint[]
 
   @@unique([date, slot])
 }
 
 model Dish {
-  id          String      @id @default(cuid())
-  name        String
-  category    String?     // e.g. Main Course, Dal, Bread, Dessert
-  mealId      String
-  meal        Meal        @relation(fields: [mealId], references: [id], onDelete: Cascade)
-  ratings     Rating[]
-  complaints  Complaint[]
-  createdAt   DateTime    @default(now())
+  id         String      @id @default(cuid())
+  name       String
+  category   String?
+  mealId     String
+  meal       Meal        @relation(fields: [mealId], references: [id], onDelete: Cascade)
+  createdAt  DateTime    @default(now())
+
+  ratings    Rating[]
+  complaints Complaint[]
+
+  @@index([mealId])
 }
 
 model Rating {
   id        String   @id @default(cuid())
-  stars     Int      // 1-5
-  reaction  String?  // emoji or quick note
+  star      Int      // 1 to 5 stars
+  reaction  String?
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   mealId    String
@@ -100,9 +102,10 @@ model Rating {
 
   @@index([mealId])
   @@index([dishId])
+  @@index([userId])
 }
 
-model MealSkip {
+model Skip {
   id        String   @id @default(cuid())
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -112,32 +115,61 @@ model MealSkip {
   createdAt DateTime @default(now())
 
   @@unique([userId, mealId])
+  @@index([mealId])
+  @@index([userId])
 }
 
-// Anonymous complaint box: identity is never stored with it
+// Anonymous complaint box: Strictly NO userId is stored
 model Complaint {
-  id          String            @id @default(cuid())
-  text        String
-  audioUrl    String?
-  language    String?           @default("en") // en, hi, gu, hinglish
-  category    ComplaintCategory @default(OTHER)
-  sentiment   Sentiment         @default(NEGATIVE)
-  urgency     UrgencyLevel      @default(MEDIUM)
-  mealId      String?
-  meal        Meal?             @relation(fields: [mealId], references: [id], onDelete: SetNull)
-  dishId      String?
-  dish        Dish?             @relation(fields: [dishId], references: [id], onDelete: SetNull)
-  resolved    Boolean           @default(false)
-  createdAt   DateTime          @default(now())
+  id         String            @id @default(cuid())
+  text       String
+  language   String            @default("en") // en, hi, gu, hinglish
+  category   ComplaintCategory @default(OTHER)
+  sentiment  Sentiment         @default(NEGATIVE)
+  urgency    UrgencyLevel      @default(MEDIUM)
+  linkDetail String?           // contextual link detail / dish details / location
+  audioUrl   String?
+  mealId     String?
+  meal       Meal?             @relation(fields: [mealId], references: [id], onDelete: SetNull)
+  dishId     String?
+  dish       Dish?             @relation(fields: [dishId], references: [id], onDelete: SetNull)
+  resolved   Boolean           @default(false)
+  createdAt  DateTime          @default(now())
 
   @@index([category])
   @@index([urgency])
+  @@index([mealId])
+  @@index([dishId])
 }
 
+// Waste-Free Streak model
+model Streak {
+  id            String    @id @default(cuid())
+  userId        String    @unique
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  currentStreak Int       @default(0)
+  longestStreak Int       @default(0)
+  lastSkipDate  DateTime?
+  lastPlateDate DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+// Strict policy / rules configuration model
+model Strict {
+  id          String   @id @default(cuid())
+  name        String   @default("Hostel Waste Reduction Rules")
+  description String?
+  cutoffHour  Int      @default(18) // 6 PM cutoff for dinner skip
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// AI-Generated Weekly Report model
 model WeeklyReport {
   id          String   @id @default(cuid())
   weekStart   DateTime
-  content     String   // AI-generated summary
+  content     String   // AI-generated markdown summary
   metricsJson Json     // aggregated statistics
   createdAt   DateTime @default(now())
 }
