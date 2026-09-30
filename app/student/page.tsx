@@ -28,6 +28,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { VoiceFeedbackModal } from "@/components/VoiceFeedbackModal";
 
 interface Dish {
   id: string;
@@ -537,6 +538,9 @@ function StudentPortalContent() {
       <div className="pt-2 text-center text-xs text-zinc-400">
         MassMatter • Only 1 rating allowed per dish per day to maintain data integrity.
       </div>
+
+      {/* Floating Web Speech API Voice Feedback Button & Modal */}
+      <VoiceFeedbackModal />
     </div>
   );
 }
