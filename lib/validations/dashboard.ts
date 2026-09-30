@@ -55,8 +55,25 @@ export const ComplaintItemSchema = z.object({
   createdAt: z.string(),
 });
 
+export const MealForecastSchema = z.object({
+  mealId: z.string(),
+  date: z.string(),
+  day: z.string(),
+  slot: z.string(),
+  startTime: z.string(),
+  endTime: z.string(),
+  dishes: z.array(z.string()),
+  totalStudents: z.number(),
+  loggedSkips: z.number(),
+  projectedSkips: z.number(),
+  predictedHeadcount: z.number(),
+  confidencePercent: z.number(),
+  confidenceNote: z.string(),
+});
+
 export const DashboardStatsSchema = z.object({
   summary: HeadcountSummarySchema,
+  forecasts: z.array(MealForecastSchema).default([]),
   dishRatings: z.array(DishRatingSchema),
   ratingTrends: z.array(RatingTrendPointSchema),
   complaintCategories: z.array(ComplaintCategoryStatSchema),
@@ -66,6 +83,7 @@ export const DashboardStatsSchema = z.object({
 
 export type DashboardStats = z.infer<typeof DashboardStatsSchema>;
 export type HeadcountSummary = z.infer<typeof HeadcountSummarySchema>;
+export type MealForecast = z.infer<typeof MealForecastSchema>;
 export type DishRating = z.infer<typeof DishRatingSchema>;
 export type RatingTrendPoint = z.infer<typeof RatingTrendPointSchema>;
 export type ComplaintCategoryStat = z.infer<typeof ComplaintCategoryStatSchema>;

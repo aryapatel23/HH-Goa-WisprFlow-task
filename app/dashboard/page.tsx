@@ -15,6 +15,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { DashboardStats, DashboardStatsSchema } from "@/lib/validations/dashboard";
 import { HeadcountCards } from "@/components/dashboard/HeadcountCards";
+import { MealForecastCards } from "@/components/dashboard/MealForecastCards";
+import { WeeklyReportCard } from "@/components/dashboard/WeeklyReportCard";
 import { DishRatingBarChart } from "@/components/dashboard/DishRatingBarChart";
 import { RatingTrendLineChart } from "@/components/dashboard/RatingTrendLineChart";
 import { ComplaintDonutChart } from "@/components/dashboard/ComplaintDonutChart";
@@ -172,19 +174,27 @@ export default function DashboardPage() {
             {/* 1. Headcount & Supporting KPIs Card */}
             <HeadcountCards summary={stats.summary} />
 
-            {/* 2. Charts Row: Dish Rating Bar Chart & 7-Day Trend Line Chart */}
+            {/* 2. Slot-by-Slot Meal Headcount Forecast with Confidence Notes */}
+            {stats.forecasts && stats.forecasts.length > 0 && (
+              <MealForecastCards forecasts={stats.forecasts} />
+            )}
+
+            {/* 3. AI Weekly Executive Briefing & Report Generator */}
+            <WeeklyReportCard />
+
+            {/* 4. Charts Row: Dish Rating Bar Chart & 7-Day Trend Line Chart */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <DishRatingBarChart data={stats.dishRatings} />
               <RatingTrendLineChart data={stats.ratingTrends} />
             </div>
 
-            {/* 3. Operational Insights: Donut Chart of Categories & Top Rejected Dishes */}
+            {/* 5. Operational Insights: Donut Chart of Categories & Top Rejected Dishes */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <ComplaintDonutChart data={stats.complaintCategories} />
               <TopRejectedDishes dishes={stats.rejectedDishes} />
             </div>
 
-            {/* 4. Anonymous Live Complaint Feed (Filterable & Highlighted) */}
+            {/* 6. Anonymous Live Complaint Feed (Filterable & Highlighted) */}
             <ComplaintFeed complaints={stats.complaints} />
           </div>
         )}

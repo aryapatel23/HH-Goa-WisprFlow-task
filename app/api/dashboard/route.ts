@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { DashboardStatsSchema } from "@/lib/validations/dashboard";
+import { getMealHeadcountForecasts } from "@/lib/forecast";
 
 const CATEGORY_COLORS: Record<string, string> = {
   HYGIENE: "#ef4444", // red
@@ -225,6 +226,9 @@ export async function GET() {
       createdAt: c.createdAt.toISOString(),
     }));
 
+    // 10. Meal Headcount Forecasts
+    const forecasts = await getMealHeadcountForecasts(6);
+
     // Assemble payload
     const payload = {
       summary: {
@@ -236,6 +240,7 @@ export async function GET() {
         totalComplaintsThisWeek,
         openCriticalComplaints,
       },
+      forecasts,
       dishRatings,
       ratingTrends,
       complaintCategories,

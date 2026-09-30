@@ -100,6 +100,7 @@ For rapid evaluation and testing, MassMatter includes 1-click demo login buttons
 │   │   │   └── route.ts               # AI-powered anonymous feedback endpoint
 │   │   ├── menu/today/route.ts        # Today's menu and meal slot query
 │   │   ├── ratings/route.ts           # 1-to-5 star ratings endpoint with 1-rating-per-day guard
+│   │   ├── reports/weekly/route.ts    # AI Weekly Executive Briefing endpoint with Zod validation
 │   │   └── skips/route.ts             # Meal skip endpoint with cutoff time validation
 │   ├── dashboard/
 │   │   └── page.tsx                   # Protected Manager/Admin Operations Dashboard
@@ -117,8 +118,10 @@ For rapid evaluation and testing, MassMatter includes 1-click demo login buttons
 │   │   ├── ComplaintFeed.tsx          # Filterable anonymous complaint feed with urgency badges
 │   │   ├── DishRatingBarChart.tsx     # Recharts Bar chart of average dish ratings
 │   │   ├── HeadcountCards.tsx         # Expected headcount forecast and KPI metric cards
+│   │   ├── MealForecastCards.tsx      # Slot-by-slot meal prediction cards with confidence notes
 │   │   ├── RatingTrendLineChart.tsx   # Recharts Line chart of 7-day rating trend
-│   │   └── TopRejectedDishes.tsx      # Ranked list of lowest rated dishes (>= 3 ratings)
+│   │   ├── TopRejectedDishes.tsx      # Ranked list of lowest rated dishes (>= 3 ratings)
+│   │   └── WeeklyReportCard.tsx       # AI Executive Report Card with generate button & fallback
 │   ├── ui/
 │   │   ├── badge.tsx                  # Badge component with status variants
 │   │   ├── button.tsx                 # Button component with CVA variants
@@ -129,13 +132,15 @@ For rapid evaluation and testing, MassMatter includes 1-click demo login buttons
 ├── docs/
 │   └── PRD.md                         # Complete original Product Requirements Document
 ├── lib/
+│   ├── forecast.ts                    # Headcount forecast modeled on slot, day-type & skips
 │   ├── grok.ts                        # Groq / xAI client instance (OpenAI SDK)
 │   ├── groq.ts                        # Client alias
 │   ├── prisma.ts                      # Prisma Client singleton
 │   ├── utils.ts                       # Tailwind clsx + twMerge utility
 │   └── validations/
 │       ├── dashboard.ts               # Zod validation schema for dashboard stats
-│       └── feedback.ts                # Zod validation schemas for feedback
+│       ├── feedback.ts                # Zod validation schemas for feedback
+│       └── weeklyReport.ts            # Zod validation schema for AI weekly report
 ├── middleware.ts                      # Role-based route guard for /student & /dashboard
 ├── prisma/
 │   ├── schema.prisma                  # PostgreSQL database models
