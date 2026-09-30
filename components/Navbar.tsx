@@ -14,6 +14,7 @@ import {
   LayoutDashboard,
   GraduationCap,
   ShieldCheck,
+  Trophy,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -56,6 +57,30 @@ export function Navbar() {
             <span>Student Portal</span>
           </Link>
 
+          <Link
+            href="/leaderboard"
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
+              pathname === "/leaderboard"
+                ? "bg-amber-50 text-amber-700 dark:bg-amber-950/50 dark:text-amber-300"
+                : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
+            }`}
+          >
+            <Trophy className="h-4 w-4 text-amber-500" />
+            <span>Leaderboard</span>
+          </Link>
+
+          <Link
+            href="/streak"
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
+              pathname === "/streak"
+                ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300"
+                : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
+            }`}
+          >
+            <Flame className="h-4 w-4 text-orange-500 fill-orange-500" />
+            <span>Streak</span>
+          </Link>
+
           {(userRole === "manager" || userRole === "admin" || !session) && (
             <Link
               href="/dashboard"
@@ -73,10 +98,13 @@ export function Navbar() {
 
         {/* Right side status & auth */}
         <div className="flex items-center gap-2 sm:gap-3">
-          <div className="hidden lg:flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50/80 px-3 py-1 text-xs font-medium text-amber-900 dark:border-amber-900/50 dark:bg-amber-950/30 dark:text-amber-300">
+          <Link
+            href="/streak"
+            className="hidden sm:flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50/80 px-3 py-1 text-xs font-medium text-amber-900 dark:border-amber-900/50 dark:bg-amber-950/30 dark:text-amber-300 hover:opacity-90 transition"
+          >
             <Flame className="h-3.5 w-3.5 text-amber-500 fill-amber-500 animate-pulse" />
-            <span>Streak: <strong>5 Days Zero-Waste</strong></span>
-          </div>
+            <span>Waste-Free Streak</span>
+          </Link>
 
           {status === "authenticated" && session?.user ? (
             <div className="flex items-center gap-2.5">

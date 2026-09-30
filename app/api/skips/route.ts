@@ -96,10 +96,18 @@ export async function POST(req: NextRequest) {
         },
       });
 
-      // Increment waste-free streak
+      // Increment waste-free streak (Strictly once per calendar day)
       let streak = await prisma.streak.findUnique({
         where: { userId },
       });
+
+      const isSameDay = (d1: Date, d2: Date) =>
+        d1.getFullYear() === d2.getFullYear() &&
+        d1.getMonth() === d2.getMonth() &&
+        d1.getDate() === d2.getDate();
+
+      const alreadyIncrementedToday =
+        streak?.lastSkipDate && isSameDay(new Date(streak.lastSkipDate), now);
 
       if (!streak) {
         streak = await prisma.streak.create({
@@ -107,16 +115,16 @@ export async function POST(req: NextRequest) {
             userId,
             currentStreak: 1,
             longestStreak: 1,
-            lastSkipDate: new Date(),
+            lastSkipDate: now,
           },
         });
-      } else {
+      } else if (!alreadyIncrementedToday) {
         streak = await prisma.streak.update({
           where: { userId },
           data: {
             currentStreak: streak.currentStreak + 1,
             longestStreak: Math.max(streak.longestStreak, streak.currentStreak + 1),
-            lastSkipDate: new Date(),
+            lastSkipDate: now,
           },
         });
       }
@@ -124,7 +132,9 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({
         success: true,
         skipped: true,
-        message: "Skip confirmed on time! 1 portion saved from waste. +1 streak point.",
+        message: alreadyIncrementedToday
+          ? "Skip confirmed on time! (Daily streak already updated today)."
+          : "Skip confirmed on time! 1 portion saved from waste. +1 streak point.",
         currentStreak: streak.currentStreak,
       });
     }

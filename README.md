@@ -98,14 +98,22 @@ For rapid evaluation and testing, MassMatter includes 1-click demo login buttons
 │   │   │   └── route.ts               # Manager analytics & headcount forecast API
 │   │   ├── feedback/
 │   │   │   └── route.ts               # AI-powered anonymous feedback endpoint
+│   │   ├── leaderboard/
+│   │   │   └── route.ts               # Top 10 students privacy-preserving leaderboard API
 │   │   ├── menu/today/route.ts        # Today's menu and meal slot query
-│   │   ├── ratings/route.ts           # 1-to-5 star ratings endpoint with 1-rating-per-day guard
+│   │   ├── ratings/route.ts           # 1-to-5 star ratings endpoint with skip-violation penalty
 │   │   ├── reports/weekly/route.ts    # AI Weekly Executive Briefing endpoint with Zod validation
-│   │   └── skips/route.ts             # Meal skip endpoint with cutoff time validation
+│   │   ├── skips/route.ts             # Meal skip endpoint with once-per-day streak enforcement
+│   │   └── streak/
+│   │       └── route.ts               # Student streak endpoint with 3, 7, 14-day tier calculation
 │   ├── dashboard/
 │   │   └── page.tsx                   # Protected Manager/Admin Operations Dashboard
+│   ├── leaderboard/
+│   │   └── page.tsx                   # Top 10 Student Waste-Free Leaderboard (first name & block)
 │   ├── login/
 │   │   └── page.tsx                   # Mobile-first Login page with 1-click Demo Accounts
+│   ├── streak/
+│   │   └── page.tsx                   # Interactive Streak page with 3, 7, 14-day colors & celebration
 │   ├── student/
 │   │   └── page.tsx                   # Protected Student Portal (Menu, ratings, skips, voice)
 │   ├── globals.css                    # Tailwind CSS v4 styling rules

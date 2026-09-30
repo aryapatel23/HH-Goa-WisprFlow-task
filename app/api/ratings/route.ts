@@ -51,7 +51,34 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // 3. Enforce ONLY ONE rating per student per dish per day
+    // 3. Anti-Cheating Rule: If student marked a skip for this meal and still showed up to eat & rate,
+    // immediately reset their streak to 0 and remove the fraudulent skip.
+    const violatedSkip = await prisma.skip.findUnique({
+      where: {
+        userId_mealId: {
+          userId,
+          mealId,
+        },
+      },
+    });
+
+    let streakResetMessage = "";
+    if (violatedSkip) {
+      await prisma.streak.upsert({
+        where: { userId },
+        update: { currentStreak: 0 },
+        create: { userId, currentStreak: 0, longestStreak: 0 },
+      });
+
+      // Remove the violated skip so headcount accounts for actual attendance
+      await prisma.skip.delete({
+        where: { id: violatedSkip.id },
+      });
+
+      streakResetMessage = " (Notice: Streak reset to 0 because you marked a skip for this meal but showed up to dine!)";
+    }
+
+    // 4. Enforce ONLY ONE rating per student per dish per day
     const now = new Date();
     const startOfDay = new Date(now);
     startOfDay.setHours(0, 0, 0, 0);
@@ -83,7 +110,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({
         success: true,
         updated: true,
-        message: "Rating updated for today",
+        message: `Rating updated for today.${streakResetMessage}`,
+        streakReset: !!violatedSkip,
         rating: savedRating,
       });
     } else {
@@ -100,7 +128,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({
         success: true,
         updated: false,
-        message: "Rating submitted successfully",
+        message: `Rating submitted successfully.${streakResetMessage}`,
+        streakReset: !!violatedSkip,
         rating: savedRating,
       });
     }
