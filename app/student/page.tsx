@@ -535,7 +535,7 @@ function StudentPortalContent() {
 
       {/* FOOTER NOTE */}
       <div className="pt-2 text-center text-xs text-zinc-400">
-        MassMaster • Only 1 rating allowed per dish per day to maintain data integrity.
+        MassMatter • Only 1 rating allowed per dish per day to maintain data integrity.
       </div>
     </div>
   );

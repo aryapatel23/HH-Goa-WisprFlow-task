@@ -1,4 +1,4 @@
-# MessMeter (Mass Master): Product Requirements Document
+# MassMatter: Product Requirements Document
 **AI-powered hostel mess feedback, demand forecasting and food-waste reduction platform**  
 *Version 1.0 | Owner: Arya | Built with Wispr Flow (voice-driven development)*
 
@@ -9,12 +9,12 @@ Hostel and college messes serve hundreds of students three times a day, yet they
 
 Modern AI makes this solvable at low cost. Large language models can read free-text complaints in English, Hindi or Hinglish, classify and summarise them. Lightweight forecasting can predict tomorrow's headcount from skip-meal signals, weekday patterns and menu popularity. Generative AI can then turn raw data into a plain-language weekly report and answer a manager's questions in natural language ("Which dish had the most waste this month?").
 
-MessMeter turns a mess from a guess-based operation into a data-driven one, with one-tap student input and an AI-assisted manager dashboard.
+MassMatter turns a mess from a guess-based operation into a data-driven one, with one-tap student input and an AI-assisted manager dashboard.
 
 ---
 
 ### 1A. The Distinctive Twist: Voice-First, Hostel-Specific, Multilingual
-Most feedback apps are forms, and students ignore forms. MessMeter is built around three ideas that make it different from a generic rating app:
+Most feedback apps are forms, and students ignore forms. MassMatter is built around three ideas that make it different from a generic rating app:
 
 1. **Speak your feedback, in your own language.** Instead of typing, a student taps a mic and says, *"aaj ka paneer bahut oily tha, aur roti kacchi thi"* or the same in Gujarati or English. The browser transcribes it (Web Speech API), and an LLM translates, categorises, scores sentiment and links it to the exact dish and meal. This is the natural fit for a project built entirely with Wispr Flow: the product and the way it was built both run on voice.
 2. **Built for one real hostel first.** The pilot uses the actual Rai University hostel mess menu, real meal timings and real dish names, with a short case-study section in the README. A named, real deployment is far more credible than generic demo data.
@@ -59,7 +59,7 @@ Most feedback apps are forms, and students ignore forms. MessMeter is built arou
 - **AI Weekly Summary:** Automated executive briefing generated from aggregated ratings, skips, and complaints.
 
 ### Stretch Features
-- **Ask MessMeter (Natural Language Analytics):** Manager asks questions in plain language; Claude queries pre-approved views.
+- **Ask MassMatter (Natural Language Analytics):** Manager asks questions in plain language; Claude queries pre-approved views.
 - **Thali Scan (Vision AI):** Photo plate leftover estimation.
 - **Menu Optimizer:** LLM suggests next week's menu based on ratings and waste patterns.
 - **PWA & Offline Menu:** Push notifications before meal skip cut-offs.

@@ -34,7 +34,7 @@ export function Navbar() {
           </div>
           <div className="flex flex-col">
             <span className="text-xl font-black tracking-tight text-zinc-900 dark:text-white">
-              MassMaster
+              MassMatter
             </span>
             <span className="text-[11px] font-medium text-emerald-600 dark:text-emerald-400">
               Hostel Mess & Waste Reduction

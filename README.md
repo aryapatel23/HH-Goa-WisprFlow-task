@@ -1,4 +1,4 @@
-# MassMaster
+# MassMatter
 
 > **"Speak up about your food. Cook what students eat. Waste less."**
 
@@ -18,7 +18,7 @@ Hostel and college messes cater to hundreds of students three times a day, yet o
 
 ## 💡 The Solution
 
-MassMaster converts hostel mess operations from guess-based cooking to **data-driven precision**:
+MassMatter converts hostel mess operations from guess-based cooking to **data-driven precision**:
 
 1. **Voice-First, Multilingual Feedback**: Students tap the microphone and speak in **Hindi, English, Gujarati, or Hinglish** (e.g., *"aaj ka paneer bahut oily tha, aur roti kacchi thi"*). The browser captures speech (Web Speech API), and Claude 3.5 Sonnet translates, categorizes (Hygiene, Taste, Quantity, Service), scores sentiment, and links feedback to the exact dish.
 2. **Anonymous Complaint Box**: Student identity is strictly isolated from complaints, fostering honest and fearless feedback.
@@ -33,13 +33,13 @@ MassMaster converts hostel mess operations from guess-based cooking to **data-dr
 
 ## 🔑 Quick Demo Accounts
 
-For rapid evaluation and testing, MassMaster includes 1-click demo login buttons directly on the [/login](http://localhost:3000/login) page:
+For rapid evaluation and testing, MassMatter includes 1-click demo login buttons directly on the [/login](http://localhost:3000/login) page:
 
 | Role | Demo Email | Access Permission | Destination Page |
 |---|---|---|---|
-| **Student** | `student@massmaster.com` | Student Portal (Menu, ratings, skips, voice feedback) | `/student` |
-| **Mess Manager** | `manager@massmaster.com` | Manager Analytics Dashboard & Demand Forecast | `/dashboard` |
-| **Chief Admin** | `admin@massmaster.com` | Full Administrative & Manager Analytics Dashboard | `/dashboard` |
+| **Student** | `student@massmatter.com` | Student Portal (Menu, ratings, skips, voice feedback) | `/student` |
+| **Mess Manager** | `manage@massmatter.com` | Manager Analytics Dashboard & Demand Forecast | `/dashboard` |
+| **Chief Admin** | `admin@massmatter.com` | Full Administrative & Manager Analytics Dashboard | `/dashboard` |
 
 > **Role Guarding**: If a student attempts to open `/dashboard`, they are automatically intercepted and redirected to `/student` with an access alert.
 
@@ -64,7 +64,7 @@ For rapid evaluation and testing, MassMaster includes 1-click demo login buttons
 
 ### Planned Stretch Features
 - [ ] **Thali Scan (Vision AI)**: Plate photo upload analyzed by Claude Vision to calculate leftover percentage per dish.
-- [ ] **Ask MassMaster (Natural Language Analytics)**: Conversational chat interface for managers to ask natural-language questions over mess data.
+- [ ] **Ask MassMatter (Natural Language Analytics)**: Conversational chat interface for managers to ask natural-language questions over mess data.
 - [ ] **AI Menu Optimizer**: Automatic menu recommendations for upcoming weeks based on historical satisfaction and waste data.
 - [ ] **PWA & Mobile Push Notifications**: Push alerts sent 30 minutes before meal skip cutoff times.
 

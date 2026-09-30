@@ -39,7 +39,7 @@ export async function POST(req: NextRequest) {
     if (!userId) {
       // Find default demo student if testing without login
       const demoStudent = await prisma.user.findFirst({
-        where: { email: "student@massmaster.com" },
+        where: { email: "student@massmatter.com" },
       });
       if (demoStudent) {
         userId = demoStudent.id;
@@ -127,7 +127,7 @@ export async function GET() {
 
     if (!userId) {
       const demoStudent = await prisma.user.findFirst({
-        where: { email: "student@massmaster.com" },
+        where: { email: "student@massmatter.com" },
       });
       if (demoStudent) userId = demoStudent.id;
     }

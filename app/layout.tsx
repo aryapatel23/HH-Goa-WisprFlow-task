@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "MassMaster | Voice-First Mess Feedback & Food-Waste Reduction",
+  title: "MassMatter | Voice-First Mess Feedback & Food-Waste Reduction",
   description:
     "AI-powered hostel mess feedback, demand forecasting and food-waste reduction platform built with Wispr Flow. Speak up about your food. Cook what students eat. Waste less.",
 };

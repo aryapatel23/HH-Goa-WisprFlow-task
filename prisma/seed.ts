@@ -18,7 +18,7 @@ const INDIAN_STUDENT_NAMES = [
 const HOSTEL_BLOCKS = ["Block A", "Block B", "Block C", "Block D"];
 
 async function main() {
-  console.log("🌱 Starting realistic MassMaster Indian Hostel database seeding...");
+  console.log("🌱 Starting realistic MassMatter Indian Hostel database seeding...");
 
   // 1. Clean existing records in correct relation order
   await prisma.rating.deleteMany();
@@ -35,7 +35,7 @@ async function main() {
   // 2. Demo Accounts: Student, Manager, and Admin
   const demoStudent = await prisma.user.create({
     data: {
-      email: "student@massmaster.com",
+      email: "student@massmatter.com",
       name: "Aarav Sharma (Demo Student)",
       role: Role.student,
       hostelBlock: "Block B",
@@ -53,7 +53,7 @@ async function main() {
 
   const demoManager = await prisma.user.create({
     data: {
-      email: "manager@massmaster.com",
+      email: "manage@massmatter.com",
       name: "Rameshwar Prasad (Mess Manager)",
       role: Role.manager,
       hostelBlock: "Admin Quarters",
@@ -63,14 +63,14 @@ async function main() {
 
   const demoAdmin = await prisma.user.create({
     data: {
-      email: "admin@massmaster.com",
+      email: "admin@massmatter.com",
       name: "Prof. S. K. Kulkarni (Chief Admin)",
       role: Role.admin,
       hostelBlock: "Admin Building",
       roomNumber: "W-101",
     },
   });
-  console.log("✅ Created 3 Dedicated Demo Accounts (student@massmaster.com, manager@massmaster.com, admin@massmaster.com).");
+  console.log("✅ Created 3 Dedicated Demo Accounts (student@massmatter.com, manage@massmatter.com, admin@massmatter.com).");
 
   // 4. Create 50 Fake Students with Streaks
   const createdStudents = [];

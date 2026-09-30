@@ -79,7 +79,7 @@ export default function LoginPage() {
             <Utensils className="h-7 w-7" />
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-900 dark:text-white">
-            Welcome to MassMaster
+            Welcome to MassMatter
           </h1>
           <p className="text-sm text-zinc-500 dark:text-zinc-400">
             Sign in to access your hostel mess portal or analytics dashboard
@@ -107,7 +107,7 @@ export default function LoginPage() {
             <Button
               type="button"
               variant="outline"
-              onClick={() => handleDemoLogin("student@massmaster.com", "student", "/student")}
+              onClick={() => handleDemoLogin("student@massmatter.com", "student", "/student")}
               disabled={!!demoLoading || loading}
               className="w-full justify-between bg-white/90 hover:bg-emerald-50 dark:bg-zinc-900 dark:hover:bg-emerald-950/40 border-emerald-200/80 dark:border-emerald-900 h-11"
             >
@@ -119,7 +119,7 @@ export default function LoginPage() {
                   <div className="text-xs font-bold text-zinc-900 dark:text-white">
                     Demo Student <span className="font-normal text-zinc-500">(Aarav)</span>
                   </div>
-                  <div className="text-[10px] text-zinc-400">student@massmaster.com</div>
+                  <div className="text-[10px] text-zinc-400">student@massmatter.com</div>
                 </div>
               </div>
               <Badge variant="default" className="text-[10px] px-2 py-0">
@@ -131,7 +131,7 @@ export default function LoginPage() {
             <Button
               type="button"
               variant="outline"
-              onClick={() => handleDemoLogin("manager@massmaster.com", "manager", "/dashboard")}
+              onClick={() => handleDemoLogin("manage@massmatter.com", "manager", "/dashboard")}
               disabled={!!demoLoading || loading}
               className="w-full justify-between bg-white/90 hover:bg-amber-50 dark:bg-zinc-900 dark:hover:bg-amber-950/40 border-amber-200/80 dark:border-amber-900 h-11"
             >
@@ -143,7 +143,7 @@ export default function LoginPage() {
                   <div className="text-xs font-bold text-zinc-900 dark:text-white">
                     Demo Mess Manager <span className="font-normal text-zinc-500">(Rameshwar)</span>
                   </div>
-                  <div className="text-[10px] text-zinc-400">manager@massmaster.com</div>
+                  <div className="text-[10px] text-zinc-400">manage@massmatter.com</div>
                 </div>
               </div>
               <Badge variant="warning" className="text-[10px] px-2 py-0">
@@ -155,7 +155,7 @@ export default function LoginPage() {
             <Button
               type="button"
               variant="outline"
-              onClick={() => handleDemoLogin("admin@massmaster.com", "admin", "/dashboard")}
+              onClick={() => handleDemoLogin("admin@massmatter.com", "admin", "/dashboard")}
               disabled={!!demoLoading || loading}
               className="w-full justify-between bg-white/90 hover:bg-red-50 dark:bg-zinc-900 dark:hover:bg-red-950/40 border-red-200/80 dark:border-red-900 h-11"
             >
@@ -167,7 +167,7 @@ export default function LoginPage() {
                   <div className="text-xs font-bold text-zinc-900 dark:text-white">
                     Demo Chief Admin <span className="font-normal text-zinc-500">(Prof. Kulkarni)</span>
                   </div>
-                  <div className="text-[10px] text-zinc-400">admin@massmaster.com</div>
+                  <div className="text-[10px] text-zinc-400">admin@massmatter.com</div>
                 </div>
               </div>
               <Badge variant="destructive" className="text-[10px] px-2 py-0">
