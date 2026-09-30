@@ -18,7 +18,7 @@ const INDIAN_STUDENT_NAMES = [
 const HOSTEL_BLOCKS = ["Block A", "Block B", "Block C", "Block D"];
 
 async function main() {
-  console.log("🌱 Starting realistic MessMeter Indian Hostel database seeding...");
+  console.log("🌱 Starting realistic MassMaster Indian Hostel database seeding...");
 
   // 1. Clean existing records in correct relation order
   await prisma.rating.deleteMany();
@@ -29,41 +29,48 @@ async function main() {
   await prisma.meal.deleteMany();
   await prisma.user.deleteMany();
   await prisma.weeklyReport.deleteMany();
-  await prisma.strict.deleteMany();
 
   console.log("🧹 Cleared old data.");
 
-  // 2. Strict Rules Setup
-  const strictRule = await prisma.strict.create({
+  // 2. Demo Accounts: Student, Manager, and Admin
+  const demoStudent = await prisma.user.create({
     data: {
-      name: "Rai University Mess Waste Reduction Policy",
-      description: "Students must log dinner skips before 18:00 (6:00 PM) to adjust preparation quantities.",
-      cutoffHour: 18,
+      email: "student@massmaster.com",
+      name: "Aarav Sharma (Demo Student)",
+      role: Role.student,
+      hostelBlock: "Block B",
+      roomNumber: "B-204",
+      streak: {
+        create: {
+          currentStreak: 5,
+          longestStreak: 12,
+          lastSkipDate: new Date(),
+          lastPlateDate: new Date(),
+        },
+      },
     },
   });
-  console.log("✅ Created Strict rules policy:", strictRule.name);
 
-  // 3. Manager and Admin Users
-  const manager = await prisma.user.create({
+  const demoManager = await prisma.user.create({
     data: {
-      email: "mess.manager@raiuniversity.edu",
-      name: "Rameshwar Prasad (Mess In-Charge)",
+      email: "manager@massmaster.com",
+      name: "Rameshwar Prasad (Mess Manager)",
       role: Role.manager,
       hostelBlock: "Admin Quarters",
       roomNumber: "M-01",
     },
   });
 
-  const admin = await prisma.user.create({
+  const demoAdmin = await prisma.user.create({
     data: {
-      email: "chief.warden@raiuniversity.edu",
-      name: "Prof. S. K. Kulkarni (Chief Warden)",
+      email: "admin@massmaster.com",
+      name: "Prof. S. K. Kulkarni (Chief Admin)",
       role: Role.admin,
       hostelBlock: "Admin Building",
       roomNumber: "W-101",
     },
   });
-  console.log("✅ Created Manager and Admin profiles.");
+  console.log("✅ Created 3 Dedicated Demo Accounts (student@massmaster.com, manager@massmaster.com, admin@massmaster.com).");
 
   // 4. Create 50 Fake Students with Streaks
   const createdStudents = [];

@@ -75,11 +75,8 @@ export default function Home() {
               Built for Rai University Hostel Mess Pilot | Powered by Wispr Flow
             </div>
 
-            <h1 className="mt-6 max-w-4xl text-4xl font-extrabold tracking-tight text-zinc-900 sm:text-5xl lg:text-6xl dark:text-white">
-              MessMeter{" "}
-              <span className="text-emerald-600 dark:text-emerald-400">
-                (Mass Master)
-              </span>
+            <h1 className="mt-6 max-w-4xl text-4xl font-extrabold tracking-tight text-zinc-900 sm:text-5xl lg:text-6xl dark:text-white text-emerald-600 dark:text-emerald-400">
+              MassMaster
             </h1>
 
             <p className="mt-4 text-xl font-medium text-emerald-700 dark:text-emerald-300 sm:text-2xl">
@@ -587,7 +584,7 @@ export default function Home() {
       {/* Footer */}
       <footer className="mt-auto border-t border-zinc-200 py-6 text-center text-xs text-zinc-500 dark:border-zinc-800">
         <p>
-          MessMeter (Mass Master) &copy; 2026. Built with Wispr Flow voice development for Rai University Hostel Mess.
+          MassMaster &copy; 2026. Built with Wispr Flow voice development for Rai University Hostel Mess.
         </p>
       </footer>
     </div>
