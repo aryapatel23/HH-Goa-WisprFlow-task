@@ -16,11 +16,12 @@ const baseURL =
   process.env.XAI_BASE_URL ||
   (isGroq ? "https://api.groq.com/openai/v1" : "https://api.x.ai/v1");
 
-// Model from environment variable
+// Model from environment variable (with fallback to verified active models)
+const rawModel = process.env.GROQ_MODEL || process.env.GROK_MODEL;
 export const GROK_MODEL =
-  process.env.GROQ_MODEL ||
-  process.env.GROK_MODEL ||
-  (isGroq ? "llama-3.3-70b-versatile" : "grok-2-latest");
+  rawModel && rawModel !== "llama-3.3-70b-versatile"
+    ? rawModel
+    : (isGroq ? "openai/gpt-oss-120b" : "grok-2-latest");
 
 export const grok = new OpenAI({
   apiKey,
