@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import anthropic from "@/lib/anthropic";
+import { grok, GROK_MODEL } from "@/lib/grok";
 import prisma from "@/lib/prisma";
 import { ComplaintCategory, Sentiment, UrgencyLevel, MealSlot } from "@prisma/client";
 
@@ -149,53 +149,59 @@ export async function POST(req: NextRequest) {
 
     let aiOutput: AIOutput | null = null;
 
-    // 2. Send text to Claude API for structured analysis
-    const apiKey = process.env.ANTHROPIC_API_KEY;
-    const isRealApiKey = apiKey && !apiKey.includes("dummy") && apiKey.startsWith("sk-ant-");
+    // 2. Call xAI Grok API via OpenAI SDK
+    const apiKey =
+      process.env.XAI_API_KEY ||
+      process.env.XAI_APA_KEY ||
+      process.env.GROK_API_KEY ||
+      process.env.GROQ_API_KEY;
 
-    if (isRealApiKey) {
+    const isConfigured = apiKey && !apiKey.includes("dummy") && apiKey.length > 5;
+
+    if (isConfigured) {
       try {
-        const prompt = `You are the AI food & hygiene intelligence module for MassMatter, an Indian hostel mess platform.
-Analyze this feedback submitted by a student in ${language} (may be Hindi, English, Gujarati, or Hinglish):
+        const prompt = `Analyze this hostel mess feedback submitted in ${language} (English, Hindi, Gujarati, or Hinglish):
 "${text}"
 
-Extract the structured assessment according to this JSON schema:
+Respond with ONLY a JSON object matching this exact schema:
 {
   "category": "HYGIENE" | "TASTE" | "QUANTITY" | "SERVICE" | "OTHER",
   "sentiment": "POSITIVE" | "NEUTRAL" | "NEGATIVE",
   "urgency": "LOW" | "MEDIUM" | "HIGH" | "CRITICAL",
   "summary": "Concise one-line summary in English",
-  "dishName": "Name of Indian hostel dish mentioned (e.g., Paneer Sabji, Dal Tadka, Phulka Roti, Poha, Khichdi, Chai, etc.) or null"
-}
+  "dishName": "Name of Indian hostel dish mentioned (e.g., Paneer Sabji, Dal Tadka, Phulka Roti, Poha, Khichdi, etc.) or null"
+}`;
 
-Respond ONLY with valid JSON. Do not wrap in markdown quotes if possible, or use standard json formatting.`;
-
-        const response = await anthropic.messages.create({
-          model: "claude-3-5-sonnet-20241022",
-          max_tokens: 350,
+        const completion = await grok.chat.completions.create({
+          model: GROK_MODEL,
+          messages: [
+            {
+              role: "system",
+              content:
+                "You are the AI food & hygiene intelligence module for MassMatter, an Indian hostel mess platform. Respond ONLY with valid JSON.",
+            },
+            { role: "user", content: prompt },
+          ],
           temperature: 0.1,
-          messages: [{ role: "user", content: prompt }],
+          response_format: { type: "json_object" },
         });
 
-        const textBlock = response.content.find((c) => c.type === "text");
-        if (textBlock && textBlock.text) {
-          const rawJson = textBlock.text.trim().replace(/^```json/, "").replace(/```$/, "").trim();
-          const parsed = JSON.parse(rawJson);
-
-          // Validate Claude's output with Zod
+        const rawContent = completion.choices[0]?.message?.content;
+        if (rawContent) {
+          const parsed = JSON.parse(rawContent.trim());
           const zodValidation = aiOutputSchema.safeParse(parsed);
           if (zodValidation.success) {
             aiOutput = zodValidation.data;
           } else {
-            console.warn("Zod validation of Claude output failed:", zodValidation.error);
+            console.warn("Zod validation of Grok output failed:", zodValidation.error);
           }
         }
-      } catch (claudeError) {
-        console.warn("Claude API call failed or timed out, executing fallback classifier:", claudeError);
+      } catch (grokError) {
+        console.warn("xAI Grok API call failed or timed out, running fallback classifier:", grokError);
       }
     }
 
-    // 3. Fallback to keyword-based classifier if Claude fails or API key is missing
+    // 3. Fallback to keyword-based classifier if Grok fails or key is missing
     if (!aiOutput) {
       aiOutput = classifyWithKeywords(text, dishName);
     }
@@ -242,13 +248,13 @@ Respond ONLY with valid JSON. Do not wrap in markdown quotes if possible, or use
         audioUrl: audioUrl || null,
         dishId: linkedDishId,
         mealId: linkedMealId,
-        // Notice: NO userId field exists in model, identity is strictly anonymous!
+        // Strictly anonymous: NO user ID is stored
       },
     });
 
     return NextResponse.json({
       success: true,
-      message: "Feedback submitted anonymously and processed by AI",
+      message: "Feedback submitted anonymously and processed by Grok AI",
       classification: aiOutput,
       complaint: {
         id: savedComplaint.id,

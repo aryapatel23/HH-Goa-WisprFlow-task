@@ -20,7 +20,7 @@ Hostel and college messes cater to hundreds of students three times a day, yet o
 
 MassMatter converts hostel mess operations from guess-based cooking to **data-driven precision**:
 
-1. **Voice-First, Multilingual Feedback**: Students tap the microphone and speak in **Hindi, English, Gujarati, or Hinglish** (e.g., *"aaj ka paneer bahut oily tha, aur roti kacchi thi"*). The browser captures speech (Web Speech API), and Claude 3.5 Sonnet translates, categorizes (Hygiene, Taste, Quantity, Service), scores sentiment, and links feedback to the exact dish.
+1. **Voice-First, Multilingual Feedback**: Students tap the microphone and speak in **Hindi, English, Gujarati, or Hinglish** (e.g., *"aaj ka paneer bahut oily tha, aur roti kacchi thi"*). The browser captures speech (Web Speech API), and xAI Grok translates, categorizes (Hygiene, Taste, Quantity, Service), scores sentiment, and links feedback to the exact dish.
 2. **Anonymous Complaint Box**: Student identity is strictly isolated from complaints, fostering honest and fearless feedback.
 3. **Headcount Demand Forecasting**: Calculates target preparation headcount in real-time:
    $$\text{Target Headcount} = \text{Enrolled Students} - \text{Logged Meal Skips} \pm \text{AI Weekday Adjustment}$$
@@ -54,7 +54,7 @@ For rapid evaluation and testing, MassMatter includes 1-click demo login buttons
 - [x] **Prisma ORM & PostgreSQL Schema**: Relational models for `User`, `Meal`, `Dish`, `Rating`, `Skip`, `Complaint` (anonymous), `Streak`, and `WeeklyReport`.
 - [x] **Mobile-First Login Page**: Clean sign-in page with 1-click demo accounts for Student, Manager, and Admin.
 - [x] **Role-Based Routing & Middleware**: Strict protection ensuring students can only open `/student` and only managers/admins can open `/dashboard`.
-- [x] **Anthropic Claude SDK Integration**: Structured prompt schemas for complaint classification and weekly reporting with automated fallbacks.
+- [x] **xAI Grok Integration (via OpenAI SDK)**: Structured prompt schemas for complaint classification and reporting with automated keyword fallbacks.
 - [x] **Zod Validation**: Strict runtime schema validation for feedback submissions and AI structured outputs.
 - [x] **Daily Menu & 1-Tap Star Ratings**: Rapid 1-to-5 star rating per dish with emoji reactions.
 - [x] **Skip-Meal Toggle**: Instant dinner/lunch skip notification before kitchen preparation cut-off.
@@ -82,7 +82,7 @@ For rapid evaluation and testing, MassMatter includes 1-click demo login buttons
 | **Charts** | Recharts | Visualizing waste reduction, headcount, and dish ratings |
 | **Database & ORM**| PostgreSQL (Neon / Supabase / Local) + Prisma ORM | Relational data persistence |
 | **Validation** | Zod | Schema validation for user input and AI responses |
-| **AI / LLM** | Anthropic Claude SDK (`@anthropic-ai/sdk`) | Multilingual classification and executive reports |
+| **AI / LLM** | xAI Grok API (via OpenAI SDK) | Multilingual classification and executive reports |
 | **Speech** | Web Speech API | Zero-cost browser speech-to-text in EN, HI, GU |
 
 ---
@@ -117,7 +117,7 @@ For rapid evaluation and testing, MassMatter includes 1-click demo login buttons
 ├── docs/
 │   └── PRD.md                         # Complete original Product Requirements Document
 ├── lib/
-│   ├── anthropic.ts                   # Anthropic Claude SDK client instance
+│   ├── grok.ts                        # xAI Grok client instance (OpenAI SDK)
 │   ├── prisma.ts                      # Prisma Client singleton
 │   ├── utils.ts                       # Tailwind clsx + twMerge utility
 │   └── validations.ts                # Zod data validation schemas
@@ -153,7 +153,9 @@ Fill in the credentials:
 ```env
 DATABASE_URL="postgresql://postgres:password@localhost:5432/messmeter?schema=public"
 AUTH_SECRET="your-32-char-auth-secret"
-ANTHROPIC_API_KEY="your-anthropic-api-key"
+XAI_BASE_URL="https://api.x.ai/v1"
+XAI_API_KEY="your-xai-api-key"
+GROK_MODEL="grok-2-latest"
 # Optional for Google sign-in:
 AUTH_GOOGLE_ID="your-google-client-id"
 AUTH_GOOGLE_SECRET="your-google-client-secret"
