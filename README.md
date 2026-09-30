@@ -98,6 +98,8 @@ For rapid evaluation and testing, MassMatter includes 1-click demo login buttons
 │   │   │   └── route.ts               # Manager analytics & headcount forecast API
 │   │   ├── feedback/
 │   │   │   └── route.ts               # AI-powered anonymous feedback endpoint
+│   │   ├── health/
+│   │   │   └── route.ts               # Production health check & zero-hardcoding environment diagnostics
 │   │   ├── leaderboard/
 │   │   │   └── route.ts               # Top 10 students privacy-preserving leaderboard API
 │   │   ├── menu/today/route.ts        # Today's menu and meal slot query
@@ -151,15 +153,52 @@ For rapid evaluation and testing, MassMatter includes 1-click demo login buttons
 │       └── weeklyReport.ts            # Zod validation schema for AI weekly report
 ├── middleware.ts                      # Role-based route guard for /student & /dashboard
 ├── prisma/
-│   ├── schema.prisma                  # PostgreSQL database models
+│   ├── schema.prisma                  # PostgreSQL database models (with directUrl support)
 │   └── seed.ts                        # Full week Indian hostel data seeder
 ├── public/                            # Static media and icons
+├── scripts/
+│   └── build.js                       # Production build script (migrate deploy + client generate)
 ├── types/
 │   └── next-auth.d.ts                 # NextAuth role session type definitions
 ├── .env.example                       # Environment variables template
-├── package.json                       # Dependencies and scripts
+├── package.json                       # Dependencies and scripts (with postinstall)
 └── tsconfig.json                      # TypeScript compiler configuration
 ```
+
+---
+
+## ☁️ Vercel & Production Deployment
+
+MassMatter is configured for zero-friction deployment on **Vercel** with hosted PostgreSQL (Neon, Supabase, or AWS RDS):
+
+### 1. Hosted PostgreSQL Connection Strings
+- **`DATABASE_URL`**: Pooled connection string (PgBouncer / port 6543) used by the application during runtime.
+- **`DIRECT_URL`**: Direct unpooled connection string (port 5432) used by Prisma CLI for schema migrations.
+
+### 2. Automated Build Pipeline
+- **`postinstall: "prisma generate"`**: Automatically generates the Prisma Client on Vercel after `npm install`.
+- **`build: "node scripts/build.js"`**: Pre-build pipeline that:
+  1. Checks `MIGRATE_DEPLOY_BEFORE_NEXT_JS_BUILD`: if set to `"true"`, runs `npx prisma migrate deploy` before the Next.js compilation.
+  2. Ensures Prisma Client is generated.
+  3. Executes `next build`.
+
+### 3. Vercel Environment Variables
+Set the following variables in your Vercel Project Settings:
+```env
+DATABASE_URL="postgresql://user:password@pooler.neon.tech/messmeter?sslmode=require&pgbouncer=true"
+DIRECT_URL="postgresql://user:password@ep-direct.neon.tech/messmeter?sslmode=require"
+MIGRATE_DEPLOY_BEFORE_NEXT_JS_BUILD="true"
+AUTH_SECRET="your-32-char-random-auth-secret"
+NEXTAUTH_URL="https://your-domain.vercel.app"
+GROQ_API_KEY="gsk_..."
+GROQ_MODEL="llama-3.3-70b-versatile"
+# Optional:
+AUTH_GOOGLE_ID="your-google-oauth-client-id"
+AUTH_GOOGLE_SECRET="your-google-oauth-client-secret"
+```
+
+### 4. Health Check Endpoint
+Ping `/api/health` to verify dynamic runtime health, database ping latency, and services without logging or exposing sensitive tokens.
 
 ---
 
